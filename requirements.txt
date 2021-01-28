@@ -1,0 +1,8 @@
+Flask
+Flask-PyMongo
+pymongo
+requests==2.18.4
+requests-toolbelt==0.8.0
+urllib3==1.22
+numpy
+pymongo[srv]

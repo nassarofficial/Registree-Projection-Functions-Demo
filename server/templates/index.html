@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>{{ t + " | " + h}}</title>
+      <meta content="initial-scale=1.0, user-scalable=no" name="viewport">
+      <meta charset="utf-8">
+      <style>
+         /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+         #map {
+         height: 100%;
+         }
+         /* Optional: Makes the sample page fill the window. */
+         html,
+         body {
+         height: 100%;
+         margin: 0;
+         padding: 0;
+         }
+         .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            opacity: 0.6;
+             z-index:99;
+          }
+
+.spin-loader {
+  height: 100px;
+  background: url("https://miro.medium.com/max/882/1*9EBHIOzhE1XfMYoKz1JcsQ.gif") no-repeat center center transparent;
+  position: relative;
+  top: 25%;
+}
+      </style>
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+      <!--       <script type="text/javascript" src="{{ url_for('static', filename='jquery.getimagedata.min.js') }}"></script>
+         -->
+   </head>
+   <body>
+      <div id="toolbar">
+        <nav class="navbar navbar-expand-lg" style="background-color: #ecf0f1;">
+          <a class="navbar-brand" href="#" style="color: #34495e;">RegisTree | Projection Functions Demo</a>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item dropdown">
+              </li>
+            </ul>
+          </div>
+            <button class="btn btn-outline-success my-2 my-sm-0" id="filterbutton" type="submit">Filter</button>
+
+        </nav>
+
+        <ul id="filternav" class="nav" style="background-color: #2c3e50;padding-top: 5px;padding-bottom: 5px;display: none;">
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" style="color: #ecf0f1;">Filter by Classification:</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" style="color: ##95a5a6;">Class</a>
+          </li>
+          <li class="nav-item dropdown">
+            <select id="class" class="form-control">
+              <option value="none">All</option>
+              <option>Acacia</option>
+              <option>Afghan pine</option>
+              <option>African senna</option>
+              <option>African sumac</option>
+              <option>African tuliptree</option>
+              <option>African wattle</option>
+              <option>Aleppo pine</option>
+              <option>American Arborvitae</option>
+              <option>American elm</option>
+              <option>American mountain ash</option>
+              <option>American sycamore</option>
+              <option>Anacua</option>
+              <option>Apple</option>
+              <option>Apricot</option>
+              <option>Aristocrat pear</option>
+              <option>Arizona cypress</option>
+              <option>Arizona sycamore</option>
+              <option>Arroyo willow</option>
+              <option>Ash</option>
+              <option>Atlas cedar</option>
+              <option>Australian tea tree</option>
+              <option>Australian tulipwood</option>
+              <option>Australian willow</option>
+              <option>Austrian pine</option>
+              <option>Avocado</option>
+              <option>Bailey acacia</option>
+              <option>Bald cypress</option>
+              <option>Banana, edible</option>
+              <option>Bigcone Douglas fir</option>
+              <option>Bigleaf maple</option>
+              <option>Birch</option>
+              <option>Black acacia</option>
+              <option>Black elderberry</option>
+              <option>Black locust</option>
+              <option>Black tupelo</option>
+              <option>Black walnut</option>
+              <option>Blireiana plum</option>
+              <option>Bloodgood plane tree</option>
+              <option>Blue atlas cedar</option>
+              <option>Blue gum eucalyptus</option>
+              <option>Bodhi tree</option>
+              <option>Bottle tree</option>
+              <option>Box elder</option>
+              <option>Brachyciton</option>
+              <option>Brazilian butterfly tree</option>
+              <option>Brazilian coral tree</option>
+              <option>Brazilian peppertree</option>
+              <option>Brisbane box</option>
+              <option>Bronze loquat</option>
+              <option>Brush Cherry</option>
+              <option>Bunya bunya tree</option>
+              <option>Burr oak</option>
+              <option>Bushy yate</option>
+              <option>Cajeput</option>
+              <option>California ash</option>
+              <option>California bay laurel</option>
+              <option>California fan palm</option>
+              <option>California foothills pine</option>
+              <option>California juniper</option>
+              <option>California peppertree</option>
+              <option>California sycamore</option>
+              <option>Callery pear</option>
+              <option>Camphor tree</option>
+              <option>Canary island date palm</option>
+              <option>Canary island pine</option>
+              <option>Cape chestnut</option>
+              <option>Cape honeysuckle</option>
+              <option>Cape pittosporum</option>
+              <option>Carob</option>
+              <option>Carolina laurel cherry</option>
+              <option>Carolina poplar</option>
+              <option>Carrotwood</option>
+              <option>Catalina cherry</option>
+              <option>Catalina ironwood</option>
+              <option>Catalpa</option>
+              <option>Cedar</option>
+              <option>Chaste tree</option>
+              <option>Cherimoya</option>
+              <option>Cherry plum</option>
+              <option>Chilean mesquite</option>
+              <option>China doll</option>
+              <option>Chinaberry</option>
+              <option>Chinese elm</option>
+              <option>Chinese flame tree</option>
+              <option>Chinese fringe tree</option>
+              <option>Chinese hackberry</option>
+              <option>Chinese hibiscus</option>
+              <option>Chinese holly</option>
+              <option>Chinese jujube</option>
+              <option>Chinese juniper</option>
+              <option>Chinese parasol tree</option>
+              <option>Chinese pear</option>
+              <option>Chinese pistache</option>
+              <option>Chinese sweetgum</option>
+              <option>Chinese tallow tree</option>
+              <option>Chinese wingnut</option>
+              <option>Chir pine</option>
+              <option>Chitalpa</option>
+              <option>Cliff date palm</option>
+              <option>Coast live oak</option>
+              <option>Coast redwood</option>
+              <option>Coastal sage scrub oak</option>
+              <option>Cockspur coral tree</option>
+              <option>Common crape myrtle</option>
+              <option>Cook pine</option>
+              <option>Coral gum</option>
+              <option>Coral tree</option>
+              <option>Cork oak</option>
+              <option>Coulter pine</option>
+              <option>Crape myrtle</option>
+              <option>Cypress</option>
+              <option>Date palm</option>
+              <option>Dawn redwood</option>
+              <option>Deodar cedar</option>
+              <option>Desert Museum palo verde</option>
+              <option>Desert gum</option>
+              <option>Desert willow</option>
+              <option>Dracaena palm</option>
+              <option>Dragon tree</option>
+              <option>Dwarf coral tree</option>
+              <option>Eastern redbud</option>
+              <option>Edible fig</option>
+              <option>Elm</option>
+              <option>Empress tree</option>
+              <option>Engelmann oak</option>
+              <option>English holly</option>
+              <option>English oak</option>
+              <option>English walnut</option>
+              <option>English yew</option>
+              <option>Eucalyptus</option>
+              <option>European crab apple</option>
+              <option>European hackberry</option>
+              <option>European white birch</option>
+              <option>Evergreen ash</option>
+              <option>Evergreen maple</option>
+              <option>Evergreen pear</option>
+              <option>False cypress</option>
+              <option>Fern Pine</option>
+              <option>Fiddleleaf fig</option>
+              <option>Fig</option>
+              <option>Firewheel tree</option>
+              <option>Flame tree</option>
+              <option>Flamegold</option>
+              <option>Flax leaf paperbark</option>
+              <option>Floss silk tree</option>
+              <option>Flowering crab apple</option>
+              <option>Foothill palo verde</option>
+              <option>Forest Pansy eastern redbud</option>
+              <option>Fountain palm</option>
+              <option>Fraser photinia</option>
+              <option>Freeman maple</option>
+              <option>Fremont cottonwood</option>
+              <option>Giant Bird of paradise tree</option>
+              <option>Giant sequoia</option>
+              <option>Ginkgo</option>
+              <option>Glossy privet</option>
+              <option>Gold markhamia</option>
+              <option>Gold medallion tree</option>
+              <option>Golden champaca</option>
+              <option>Golden trumpet tree</option>
+              <option>Golden wonder senna</option>
+              <option>Goldenrain tree</option>
+              <option>Grapefruit</option>
+              <option>Green ash</option>
+              <option>Green wattle</option>
+              <option>Guadalupe palm</option>
+              <option>Guatemalan holly</option>
+              <option>Guava</option>
+              <option>Hackberry</option>
+              <option>Hankow willow</option>
+              <option>Holly oak</option>
+              <option>Hollywood juniper</option>
+              <option>Honey mesquite</option>
+              <option>Honeylocust</option>
+              <option>Hong Kong orchid tree</option>
+              <option>Horsetail tree</option>
+              <option>Incense cedar</option>
+              <option>India hawthorn</option>
+              <option>Indian laurel fig</option>
+              <option>Itailian stone pine</option>
+              <option>Italian alder</option>
+              <option>Italian cypress</option>
+              <option>Jacaranda</option>
+              <option>Jaggery palm</option>
+              <option>Japanese black pine</option>
+              <option>Japanese crape myrtle</option>
+              <option>Japanese maple</option>
+              <option>Japanese pagoda tree</option>
+              <option>Japanese persimmon</option>
+              <option>Japanese privet</option>
+              <option>Japanese zelkova</option>
+              <option>Jelly Pindo palm</option>
+              <option>Jerusalem thorn</option>
+              <option>Juniper</option>
+              <option>Kaffir plum</option>
+              <option>Kentia palm</option>
+              <option>King palm</option>
+              <option>King sago</option>
+              <option>Kwanzan cherry</option>
+              <option>Laurel sumac</option>
+              <option>Lemon</option>
+              <option>Lemon bottlebrush</option>
+              <option>Lemon-scented gum</option>
+              <option>Leyland cypress</option>
+              <option>Little Gem magnolia</option>
+              <option>Little kurrajong</option>
+              <option>Littleleaf linden</option>
+              <option>Lombardy poplar</option>
+              <option>London plane tree</option>
+              <option>Long leaf yellowwood</option>
+              <option>Longleaf pine</option>
+              <option>Loquat</option>
+              <option>Lucky nut</option>
+              <option>Magenta cherry</option>
+              <option>Magnolia</option>
+              <option>Majestic Beauty indian hawthorne</option>
+              <option>Majestic Beauty magnolia</option>
+              <option>Majesty palm</option>
+              <option>Mallet flower</option>
+              <option>Mango</option>
+              <option>Manna gum</option>
+              <option>Maple</option>
+              <option>Marina arbutus</option>
+              <option>Mayten</option>
+              <option>Mediterranean fan palm</option>
+              <option>Mexican blue palm</option>
+              <option>Mexican elderberry</option>
+              <option>Mexican fan palm</option>
+              <option>Mexican sycamore</option>
+              <option>Mimosa</option>
+              <option>Modesto ash</option>
+              <option>Monterey cypress</option>
+              <option>Monterey pine</option>
+              <option>Moraine ash</option>
+              <option>Moreton Bay fig</option>
+              <option>Mountain she-oak</option>
+              <option>Myoporum</option>
+              <option>Nagi podocarpus</option>
+              <option>Naked coral tree</option>
+              <option>Narrow-leaf Bottle tree</option>
+              <option>Narrow-leaf ash</option>
+              <option>Nectarine</option>
+              <option>New Zealand Christmas tree</option>
+              <option>Norfolk Island pine</option>
+              <option>Northern California black walnut</option>
+              <option>Northern red oak</option>
+              <option>Norway maple</option>
+              <option>Oak</option>
+              <option>Oleander</option>
+              <option>Olive</option>
+              <option>Orange</option>
+              <option>Orchid tree</option>
+              <option>Oriental arborvitae</option>
+              <option>Oriental sweetgum</option>
+              <option>Palm evergreen medium</option>
+              <option>Papaya</option>
+              <option>Paper mulberry</option>
+              <option>Paperbark</option>
+              <option>Peach, Nectarine</option>
+              <option>Pear</option>
+              <option>Pear, edible</option>
+              <option>Pecan</option>
+              <option>Pencil tree</option>
+              <option>Peppermint tree</option>
+              <option>Persea</option>
+              <option>Persimmon</option>
+              <option>Pin oak</option>
+              <option>Pine</option>
+              <option>Pineapple guava</option>
+              <option>Pink flowered locust</option>
+              <option>Pink melaleuca</option>
+              <option>Pink powderpuff</option>
+              <option>Pink trumpet tree</option>
+              <option>Pinkball</option>
+              <option>Plum, edible</option>
+              <option>Pomegranate</option>
+              <option>Ponderosa pine</option>
+              <option>Ponytail palm</option>
+              <option>Prickly melaleuca</option>
+              <option>Primrose tree; cow itch tree</option>
+              <option>Purple Bailey acacia</option>
+              <option>Purple Robe locust</option>
+              <option>Purple leaf plum</option>
+              <option>Purple orchid tree</option>
+              <option>Pygmy date palm</option>
+              <option>Queen palm</option>
+              <option>Queensland lacebark tree</option>
+              <option>Queensland pittosporum</option>
+              <option>Raywood ash</option>
+              <option>Red alder</option>
+              <option>Red cap gum</option>
+              <option>Red flowering gum</option>
+              <option>Red ironbark</option>
+              <option>Red maple</option>
+              <option>Red willow</option>
+              <option>Redbay</option>
+              <option>Redbud</option>
+              <option>River birch</option>
+              <option>River red gum</option>
+              <option>River she-oak</option>
+              <option>River wattle</option>
+              <option>Rose-of-sharon</option>
+              <option>Rough Shell Macadamia</option>
+              <option>Round-leaf sweetgum</option>
+              <option>Rubber tree</option>
+              <option>Rusty-leaf fig</option>
+              <option>Sapphire dragon tree</option>
+              <option>Saucer magnolia</option>
+              <option>Sausage tree</option>
+              <option>Saw palm</option>
+              <option>Scarlet oak</option>
+              <option>Schefflera</option>
+              <option>Senegal date palm</option>
+              <option>Shantung maple</option>
+              <option>Shoestring acacia</option>
+              <option>Siberian elm</option>
+              <option>Silk oak</option>
+              <option>Silver dollar gum eucalyptus</option>
+              <option>Silver dollar tree</option>
+              <option>Silver maple</option>
+              <option>Smoke tree</option>
+              <option>Smooth Shell Macadamia</option>
+              <option>Snail tree</option>
+              <option>South African coral tree</option>
+              <option>Southern California black walnut</option>
+              <option>Southern live oak</option>
+              <option>Southern magnolia</option>
+              <option>Spanish dagger yucca</option>
+              <option>Spotted gum</option>
+              <option>St Mary magnolia</option>
+              <option>Star magnolia</option>
+              <option>Stone fruit</option>
+              <option>Strawberry madrone tree</option>
+              <option>Sugar gum</option>
+              <option>Sugar maple</option>
+              <option>Sugar pine</option>
+              <option>Sumac</option>
+              <option>Swamp mahogany</option>
+              <option>Swamp paperbark</option>
+              <option>Sweet acacia</option>
+              <option>Sweet almond</option>
+              <option>Sweet bay</option>
+              <option>Sweet cherry</option>
+              <option>Sweet chestnut</option>
+              <option>Sweet michelia</option>
+              <option>Sweetgum</option>
+              <option>Sweetshade</option>
+              <option>Sycamore maple</option>
+              <option>Sydney red gum</option>
+              <option>Tallowtree</option>
+              <option>Tangerine</option>
+              <option>Tarata box</option>
+              <option>Thornless honey locust</option>
+              <option>Tipu</option>
+              <option>Tobira</option>
+              <option>Torrey pine</option>
+              <option>Toyon</option>
+              <option>Tree of heaven</option>
+              <option>Triangle palm</option>
+              <option>Tulip tree</option>
+              <option>Turkish pine</option>
+              <option>Valley oak</option>
+              <option>Velvet ash</option>
+              <option>Victorian box</option>
+              <option>Walnut</option>
+              <option>Water gum</option>
+              <option>Weeping bottlebrush</option>
+              <option>Weeping fig</option>
+              <option>Weeping willow</option>
+              <option>Western catalpa</option>
+              <option>Western hackberry</option>
+              <option>Western redbud</option>
+              <option>White alder</option>
+              <option>White ash</option>
+              <option>White eastern redbud</option>
+              <option>White iron bark</option>
+              <option>White mulberry</option>
+              <option>White orchid tree</option>
+              <option>White sapote</option>
+              <option>Willow</option>
+              <option>Willow acacia</option>
+              <option>Willow pittosporum</option>
+              <option>Willow-leaved gimlet</option>
+              <option>Wilson holly</option>
+              <option>Windmill palm</option>
+              <option>Xylosma</option>
+              <option>Yellow trumpetbush</option>
+              <option>Yellowwood</option>
+              <option>Yew pine</option>
+              <option>pink cedar</option>
+            </select>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" style="color: #ecf0f1;">Filter by Trunk Diameter:</a>
+          </li>
+         <li class="nav-item">
+            <a class="nav-link disabled" href="#" style="color: ##95a5a6;">At least</a>
+          </li>
+          <li class="nav-item dropdown">
+            <select id="minSelect" class="form-control">
+              <option value="none">All</option>
+
+            </select>
+          </li>
+         <li class="nav-item">
+            <a class="nav-link disabled" href="#" style="color: ##95a5a6;">At Most</a>
+          </li>
+          <li class="nav-item dropdown">
+            <select id="maxSelect" class="form-control">
+              <option value="none">All</option>
+            </select>
+          </li>
+        </ul>
+      </div>
+
+      <div class="loading-overlay">
+        <div class="spin-loader"></div>
+      </div>
+      <div class="container-fluid">
+        <div id="zara" style="height: 10px;">
+        </div>
+        <div class="row">
+           <div class="col-7">
+              <div id="map" style="height:calc(100vh - 80px);">
+              </div>
+           </div>
+           <div class="col-4">
+              <div id="panoview">
+              </div>
+           </div>
+        </div>
+      </div>
+
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" type="text/javascript"></script> 
+      <script src="{{ g_api }}"></script> 
+      <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script> 
+      <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+      <script src="{{ url_for('static', filename='canvas2image.js') }}"></script>
+      <script>
+
+var map;
+var markers = new Array();
+var newmarkers = new Array();
+var layers;
+var notes = {}
+
+var counteroftrees = 10;
+var datas = JSON.parse('{{ data | tojson | safe}}');
+var center = JSON.parse('{{ center | tojson | safe}}');
+var markerdata = []
+var markerCluster = null;
+var MIN_ZOOM = 12;
+var streetview_canvases = null,
+    streetview_contexts = null,
+    rois = [],
+    panos = [],
+    streetview_arrows = null;
+var streetview_colors = ["#c0392b", "#2ecc71", "#2980b9", "#f1c40f", "#1abc9c", "#9b59b6", "#FFFFFF", "#000000"];
+var streetview_marker_radius = 5,
+    num_panos = 4;
+var streetview_canvas_width = 300,
+    streetview_canvas_height = 300,
+    streetview_canvas_num_cols = 2;
+var EARTH_RADIUS = 6371000;
+// Radius in meters of Earth
+// ballpark estimate of the number of meters that camera is off the ground
+var streetview_obj_dims = [16, 16],
+    streetview_height =-4;
+var num_x = 0;
+var num_y = 0;
+var tile_width = 0;
+var tile_height = 0;
+var panosdetails = []
+var streetview_canvases_off = []
+var species = "";
+var genus = "";
+var min_width = "";
+var max_width = "";
+// initialize_streetview_visualization_controls();
+var classselect = $('#class option:selected').text();
+var minselect = $('#minSelect option:selected').text();
+var maxselect = $('#maxSelect option:selected').text();
+
+var x = document.getElementById("minSelect");
+valcny = 0
+for (i = 0; i < 164; i++) {
+    var option = document.createElement("option");
+    valcny = valcny + 0.5
+    option.text = String(valcny);
+    x.add(option);
+}
+
+var option = document.createElement("option");
+option.text = String(83)
+x.add(option);
+option.text = String(93)
+x.add(option);
+option.text = String(99)
+x.add(option);
+option.text = String(112)
+x.add(option);
+option.text = String(120.3)
+x.add(option);
+option.text = String(160)
+x.add(option);
+
+var y = document.getElementById("maxSelect");
+valcny = 0
+for (i = 0; i < 164; i++) {
+    var option = document.createElement("option");
+    valcny = valcny + 0.5
+    option.text = String(valcny);
+    y.add(option);
+}
+option.text = String(83)
+y.add(option);
+option.text = String(93)
+y.add(option);
+option.text = String(99)
+y.add(option);
+option.text = String(112)
+y.add(option);
+option.text = String(120.3)
+y.add(option);
+option.text = String(160)
+y.add(option);
+
+
+function post(path, params, method) {
+    method = method || "post";
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+    for (var key in params) {
+        if (params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+            form.appendChild(hiddenField);
+        }
+    }
+    document.body.appendChild(form);
+    form.submit();
+}
+
+function zoomed_canvas_coordinate(x, y, box) {
+    return {
+        'x': (x - box.x1) * streetview_canvas_width / (box.x2 - box.x1),
+        'y': (y - box.y1) * streetview_canvas_height / (box.y2 - box.y1)
+    }
+}
+
+function unzoomed_canvas_coordinate(x, y, box) {
+    return {
+        'x': x * (box.x2 - box.x1) / streetview_canvas_width + box.x1,
+        'y': y * (box.y2 - box.y1) / streetview_canvas_height + box.y1
+    };
+}
+
+function draw_pano(context, pano, markings) {
+    // console.log("cant see the road")
+    var box = context.crop_box;
+    // console.log("Box: ", box)
+
+    if (box.x1 < 0)
+        // console.log("Boxer: ", pano, pano.image, streetview_canvas_width)
+        context.drawImage(pano.image, pano.image.width + box.x1, box.y1, -box.x1, box.y2 - box.y1, 0, 0, streetview_canvas_width * (-box.x1) / (box.x2 - box.x1), streetview_canvas_height);
+    context.drawImage(pano.image, Math.max(0, box.x1), box.y1, Math.min(box.x2, pano.image.width) - Math.max(0, box.x1), box.y2 - box.y1, streetview_canvas_width * (Math.max(0, -box.x1)) / (box.x2 - box.x1), 0, streetview_canvas_width * (Math.min(box.x2, pano.image.width) - Math.max(0, box.x1)) / (box.x2 - box.x1), streetview_canvas_height);
+    if (box.x2 > pano.image.width)
+        context.drawImage(pano.image, 0, box.y1, box.x2 - pano.image.width, box.y2 - box.y1, streetview_canvas_width * (Math.min(box.x2, pano.image.width) - box.x1) / (box.x2 - box.x1), 0, streetview_canvas_width * (box.x2 - pano.image.width) / (box.x2 - box.x1), streetview_canvas_height);
+    for (i = 0; i < markings.length; i++) {
+        var m = markings[i];
+        context.beginPath();
+        context.strokeStyle = m.strokeStyle;
+        context.lineWidth = m.lineWidth;
+        if (m.type == 'circle') {
+            var pt = zoomed_canvas_coordinate(m.x, m.y, box);
+            context.arc(pt.x, pt.y, m.radius, 0, 2 * Math.PI);
+        } else if (m.type == 'line') {
+            var p1 = zoomed_canvas_coordinate(m.x1, m.y1, box),
+                p2 = zoomed_canvas_coordinate(m.x2, m.y2, box);;
+            context.moveTo(p1.x, p1.y);
+            context.lineTo(p2.x, p2.y);
+        }
+        context.stroke();
+    }
+}
+
+function haversine_distance(lat1, lon1, lat2, lon2) {
+    var slat = Math.sin((lat2 - lat1) / 2.0 * Math.PI / 180),
+        slon = Math.sin((lon2 - lon1) / 2.0 * Math.PI / 180);
+    var a = slat * slat + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * slon * slon;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return EARTH_RADIUS * c;
+}
+
+function streetview_pixel_to_geographic_coordinate(pano, x, y, height, method) {
+    var camera_height = 0;
+    // ballpark estimate of the number of meters that camera is off the ground
+    var pitch = 0;
+    var yaw = parseFloat(pano['yaw']) * Math.PI / 180;
+    var image_width = pano.w,
+        image_height = pano.image.height;
+    if (!height) height = 0;
+    var lat1 = pano.lat,
+        lng1 = pano.lng;
+    var look_at_angle = x * (2 * Math.PI) / image_width;
+    var tilt_angle = (image_height / 2 - y) * Math.PI / image_height + pitch;
+    var z = (height - camera_height) / Math.tan(Math.min(-1e-2, tilt_angle));
+    var dx = Math.sin((look_at_angle - Math.PI + yaw)) * z / EARTH_RADIUS;
+    var dy = Math.cos((look_at_angle - Math.PI + yaw)) * z / EARTH_RADIUS;
+    var lat = lat1 + Math.asin(dy) * 180 / Math.PI;
+    var lng = lng1 + Math.asin(dx / Math.cos(lat1 * Math.PI / 180)) * 180 / Math.PI;
+    return {
+        'lat': lat,
+        'lng': lng
+    };
+}
+
+
+function geographic_coordinate_to_streetview_pixel(pano, lat, lng, object_dims, height, method) {
+    var camera_height = 0;
+    // ballpark estimate of the number of meters that camera is off the ground
+    var pitch = 0;
+    var yaw = parseFloat(0) * Math.PI / 180;
+
+    var image_width = 2048,
+        image_height = 1024;
+    if (!height) height = 0;
+    var lat1 = pano['lat'],
+        lng1 = pano['lng'];
+    // Suppose the camera is at x=0, y=0, and the y-axis points north, and the x-axis points east. Compute the position (dx,dy) corresponding to (lat,lng).
+    // dy=math.sin(lat-lat1)*EARTH_RADIUS.  dx=math.cos(lat1)*math.sin(lng-lng1)*EARTH_RADIUS.  math.atan2(dx, dy) is then the clockwise angle from north, 
+    // which sits in the center of the panorama image (if the panorama image is first shifted by yaw degrees, such that north is in the center of the image).
+    var dx = Math.cos(lat1 * Math.PI / 180) * Math.sin((lng - lng1) * Math.PI / 180),
+        dy = Math.sin((lat - lat1) * Math.PI / 180);
+    var look_at_angle = Math.PI + Math.atan2(dx, dy) - yaw;
+    while (look_at_angle > 2 * Math.PI) look_at_angle = look_at_angle - 2 * Math.PI;
+    while (look_at_angle < 0) look_at_angle = look_at_angle + 2 * Math.PI;
+    var z = Math.sqrt(dx * dx + dy * dy) * EARTH_RADIUS;
+    if (!object_dims) {
+        x = (image_width * look_at_angle) / (2 * Math.PI);
+        y = image_height / 2 - image_height * (Math.atan2(height - camera_height, z) - pitch) / (Math.PI);
+        return {
+            'x': x,
+            'y': y
+        };
+    } else {
+        x1 = image_width * (Math.atan2(-object_dims[0] / 2, z) + look_at_angle) / (2 * Math.PI);
+        x2 = image_width * (Math.atan2(object_dims[0] / 2, z) + look_at_angle) / (2 * Math.PI);
+        y1 = image_height / 2 - image_height * (Math.atan2(height + object_dims[1] - camera_height, z) + pitch) / (Math.PI);
+        y2 = image_height / 2 - image_height * (Math.atan2(height - camera_height, z) + pitch) / (Math.PI);
+        console.log(y1, y2)
+        return {
+            'x1': x1,
+            'y1': y1,
+            'x2': x2,
+            'y2': y2+300
+        };
+    }
+}
+
+function reload(markers_ls) {
+    markers = new Array();
+    for (i = 0; i < markers_ls.length; i++) {
+        markers.push(markers_ls[i]);
+    }
+    markerCluster = new MarkerClusterer(map, markers, {
+        imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclausterer/m',
+        maxZoom: 18,
+        gridSize: 2000,
+        minimumClusterSize: 5
+    });
+}
+
+function reloadmarkers(data) {
+    if (markerCluster) {
+        markerCluster.clearMarkers();
+    }
+    markers = new Array();
+    
+    for (i = 0; i < data.length; i++) {
+
+         icon_mark = '{{url_for('static', filename='tree-icon.png')}}'
+         if ('annotated' in data[i]){
+           icon_mark = '{{url_for('static', filename='tree-icon-false-negative.png')}}'
+         }
+         else{
+           icon_mark = '{{url_for('static', filename='tree-icon.png')}}'
+         }
+        var marker = new google.maps.Marker({
+            title: JSON.stringify({
+                "_id": data[i]['_id'],
+                "o_id": i
+            }),
+            position: new google.maps.LatLng(data[i]['location']['coordinates'][1], data[i]['location']['coordinates'][0]),
+            draggable: false,
+            icon: icon_mark
+        });
+        var contentString = '<div id="content">' +
+            '<div id="siteNotice">' +
+            '</div>' +
+            '<div id="bodyContent">' +
+            '<p><b>Coordinates</b>: ' + data[i]['location']['coordinates'][0] + ', ' + data[i]['location']['coordinates'][1] + ' </p>' +
+            '<p><b>Diameter</b>: ' + data[i]['diameter'] + ' </p>' +
+            '<p><b>Class</b>: ' + data[i]['class'] + ' </p>' +
+            '</div>' +
+            '</div>';
+
+        var infowindow = new google.maps.InfoWindow()
+
+
+        marker.addListener('click', function() {
+            infowindow.open(map, marker);
+        });
+
+
+        google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+                return function() {
+                   infowindow.setContent(content);
+                   infowindow.open(map,marker);
+                };
+            })(marker,contentString,infowindow)); 
+
+        markers.push(marker);
+
+    }
+
+    markerCluster = new MarkerClusterer(map, markers, {
+        imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+        maxZoom: 20,
+        gridSize: 200,
+        minimumClusterSize: 25
+    });
+}
+if (center["status"] == "None") {
+    map = new google.maps.Map(document.getElementById('map'), {
+        mapTypeId: 'satellite',
+        zoom: 20,
+        tilt: 0,
+        center: {
+            lat: 34.0806598638619,
+            lng: -118.3702966793333
+        }
+    });
+    map.setOptions({
+        minZoom: 15,
+        maxZoom: 20
+    });
+
+
+    initialize_streetview_visualization_controls();
+    map.addListener('mousemove', function(e) {
+        update_streetview_lookat_location(e.latLng.lat(), e.latLng.lng(), false);
+    });
+
+    map.addListener('click', function(e) {
+        update_streetview_lookat_location(e.latLng.lat(), e.latLng.lng(), true);
+    });
+} else {
+    map = new google.maps.Map(document.getElementById('map'), {
+        mapTypeId: 'satellite',
+        zoom: 20,
+        tilt: 0,
+        center: {
+            lat: 34.0806598638619,
+            lng: -118.3702966793333
+        }
+    });
+    initialize_streetview_visualization_controls();
+    map.addListener('mousemove', function(e) {
+        update_streetview_lookat_location(e.latLng.lat(), e.latLng.lng(), false);
+    });
+
+    map.addListener('click', function(e) {
+        update_streetview_lookat_location(e.latLng.lat(), e.latLng.lng(), true);
+    });
+
+}
+
+function get_nearest_panos(lat, lng) {
+    $.ajax({
+        type: 'POST',
+        url: '/UpdateMarker',
+        type: 'post',
+        data: JSON.stringify({
+            "id": idd,
+            "lat": lat,
+            "lng": lng
+        }),
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        success: function(data) {
+            var resp = data['response'];
+        }
+    });
+}
+
+
+function initialize_streetview_visualization_controls() {
+    streetview_canvases = []
+    streetview_contexts = []
+    streetview_arrows = []
+    var tr = null,
+        table = document.createElement('table'),
+        tbody = document.createElement('tbody');
+    table.appendChild(tbody);
+    document.getElementById('panoview').appendChild(table);
+    for (var i = 0; i < num_panos; i++) {
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        var resultheight = $("#map").height();
+        var res = (resultheight / 2) - 10;
+        streetview_canvas_height = res;
+        canvas.pano_ind = i;
+        canvas.width = streetview_canvas_width;
+        canvas.height = res;
+        // canvas.height = 300;
+
+        canvas.style.border = '3px solid ' + streetview_colors[i];
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        document.getElementById('panoview').style.minWidth = streetview_canvas_width;
+        var td = document.createElement('td');
+        if (i % streetview_canvas_num_cols == 0) {
+            tr = document.createElement('tr');
+            tbody.appendChild(tr);
+        }
+        td.appendChild(canvas);
+        tr.appendChild(td);
+        streetview_canvases.push(canvas);
+        streetview_contexts.push(context);
+        var line = new google.maps.Polyline({
+            path: [{
+                lat: 0,
+                lng: 0
+            }, {
+                lat: 0.00001,
+                lng: 0.00001
+            }, {
+                lat: 0,
+                lng: 0
+            }, {
+                lat: 0.00001,
+                lng: 0.00001
+            }],
+            strokeColor: streetview_colors[i],
+            strokeWeight: 2,
+            clickable: false,
+            map: map
+        });
+        streetview_arrows.push(line);
+        // If the user moves the mouse in a streetview image, show the corresponding pixel location in the other streetview images
+        canvas.addEventListener('mousemove', function(e) {
+            if (this.pano_ind < panos.length) {
+                var x = e.offsetX || e.originalEvent.layerX,
+                    y = e.offsetY || e.originalEvent.layerY;
+                var pano = panos[this.pano_ind];
+                var pt = unzoomed_canvas_coordinate(x, y, streetview_contexts[this.pano_ind].crop_box);
+                var geo_loc = streetview_pixel_to_geographic_coordinate(pano, pt.x, pt.y);
+                update_streetview_lookat_location(geo_loc.lat, geo_loc.lng, false, pano);
+            }
+        }, false);
+    }
+
+}
+
+function addImageProcess(src) {
+    return new Promise((resolve, reject) => {
+        let img = new Image();
+        img.setAttribute('crossOrigin', 'anonymous');
+
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+    })
+}
+
+
+function addImageProcess(src) {
+    return new Promise((resolve, reject) => {
+        let img = new Image();
+        img.setAttribute('crossOrigin', 'anonymous');
+
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+    })
+}
+
+
+function loaddrawimagebg(panoinst) {
+    return new Promise(function(mainresolve, mainreject) {
+        var canvasss = document.createElement('canvas');
+        var ctxt = canvasss.getContext("2d");
+        var i = 0;
+        var j = 0;
+        var imgIndex = 0;
+        var imger;
+        zoom = 2
+        canvasss.width = 1024;
+        canvasss.height = 512;
+
+        var image_link = "https://images.mapillary.com/"+panoinst['properties']['key']+"/thumb-1024.jpg"
+
+        var img_prom = function() {
+            return new Promise(function(resolve, reject) {
+                let img = new Image();
+                img.setAttribute('crossOrigin', 'anonymous');
+                img.onload = function() {
+                    ctxt.drawImage(img, 0, 0);
+                    resolve();
+                };
+                img.onerror = reject;
+                img.src = image_link;
+
+            });
+        }
+
+        var final = function() {
+            imger = Canvas2Image.convertToImage(canvasss, 2048, 1024)
+            var objer = {
+                "image": imger,
+                "lat": parseFloat(panoinst['geometry']['coordinates'][1]),
+                "lng": parseFloat(panoinst['geometry']['coordinates'][0]),
+                "panoId": panoinst['properties']['key'],
+                "yaw": parseFloat(panoinst['properties']['ca'])
+            }
+            mainresolve(objer);
+
+        }
+        // zero.then(first).then(second).then(third).then(fourth).then(fifth).then(sixth).then(seventh);
+        img_prom().then(final);
+    })
+
+}
+
+function initer(lat, lng) {
+    return new Promise((resolve) => {
+        $.ajax({
+            type: 'POST',
+            url: '/get_panos',
+            type: 'post',
+            data: JSON.stringify({
+                "lat": lat,
+                "lng": lng
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function(data) {
+                var panosres = data['response'];
+                resolve(panosres);
+            }
+        });
+    })
+}
+
+
+async function update_streetview_lookat_location(lat, lng, find_nearest_panos, fixed_pano) {
+    if (find_nearest_panos) {
+        panos = []
+        $('.loading-overlay').show();
+        var init = initer(lat, lng)
+        var panosres = await init
+
+        var p0 = loaddrawimagebg(panosres[0]);
+        var obj0 = await p0;
+        panos.push(obj0);
+        var p1 = loaddrawimagebg(panosres[1]);
+        var obj1 = await p1;
+        panos.push(obj1);
+        var p2 = loaddrawimagebg(panosres[2]);
+        var obj2 = await p2;
+        panos.push(obj2);
+        var p3 = loaddrawimagebg(panosres[3]);
+        var obj3 = await p3;
+        panos.push(obj3);
+        panosdetails = panosres;
+
+        for (var i = 0; i < panos.length; i++) {
+            streetview_arrows[i].setPath([{
+                lat: panos[i].lat,
+                lng: panos[i].lng
+            }, {
+                lat: lat,
+                lng: lng
+            }]);
+
+            var loc = geographic_coordinate_to_streetview_pixel(panos[i], lat, lng);
+            var box = geographic_coordinate_to_streetview_pixel(panos[i], lat, lng, streetview_obj_dims, streetview_height);
+            if (!fixed_pano || panos[i] != fixed_pano) streetview_contexts[i].crop_box = box;
+            draw_pano(streetview_contexts[i], panos[i],
+                [{
+                    'type': 'circle',
+                    'x': loc.x,
+                    'y': loc.y,
+                    'strokeStyle': 'blue',
+                    'radius': streetview_marker_radius,
+                    'lineWidth': 3
+                }]);
+            $('.loading-overlay').hide()
+        }
+
+    } else {
+        for (var i = 0; i < panos.length; i++) {
+            streetview_arrows[i].setPath([{
+                lat: panos[i].lat,
+                lng: panos[i].lng
+            }, {
+                lat: lat,
+                lng: lng
+            }]);
+            var loc = geographic_coordinate_to_streetview_pixel(panos[i], lat, lng);
+            var box = geographic_coordinate_to_streetview_pixel(panos[i], lat, lng, streetview_obj_dims, streetview_height);
+            if (!fixed_pano || panos[i] != fixed_pano) streetview_contexts[i].crop_box = box;
+            draw_pano(streetview_contexts[i], panos[i],
+                [{
+                    'type': 'circle',
+                    'x': loc.x,
+                    'y': loc.y,
+                    'strokeStyle': 'blue',
+                    'radius': streetview_marker_radius,
+                    'lineWidth': 3
+                }]);
+        }
+
+    }
+}
+
+function reloader(classselect, minselect, maxselect) {
+    // console.log(JSON.stringify(map.getBounds()))
+
+    bounds = map.getBounds()
+    let ne = bounds.getNorthEast(); // Coords of the northeast corner
+    let sw = bounds.getSouthWest(); // Coords of the southwest corner
+    poster = {
+        "south": sw.lat(),
+        "west": sw.lng(),
+        "north": ne.lat(),
+        "east": ne.lng(),
+        "class": classselect,
+        "minselect": minselect,
+        "maxselect": maxselect
+    };
+
+    query = JSON.stringify(poster)
+    $.ajax({
+        type: 'POST',
+        url: '/GetBoundsMarkers',
+        type: 'post',
+        data: query,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        success: function(data) {
+            markerdata = []
+            markerdata = data['response'];
+            reloadmarkers(markerdata);
+        }
+    });
+}
+
+google.maps.event.addListener(map, 'idle', function() {
+    bounds = map.getBounds()
+    let ne = bounds.getNorthEast(); // Coords of the northeast corner
+    let sw = bounds.getSouthWest(); // Coords of the southwest corner
+    poster = {
+        "south": sw.lat(),
+        "west": sw.lng(),
+        "north": ne.lat(),
+        "east": ne.lng(),
+        "class": classselect,
+        "minselect": minselect,
+        "maxselect": maxselect
+    };
+
+    query = JSON.stringify(poster)
+    $.ajax({
+        type: 'POST',
+        url: '/GetBoundsMarkers',
+        type: 'post',
+        data: query,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        success: function(data) {
+            if (data['response'] != "failed") {
+                markerdata = []
+                markerdata = data['response'];
+                reloadmarkers(markerdata);
+            }
+        }
+    });
+});
+
+
+
+$('#filterbutton').click(function() {
+    $("#filternav").toggle();
+});
+$('#class').click(function() {
+    markerdata = []
+    classselect = $('#class option:selected').text();
+    minselect = $('#minSelect option:selected').text();
+    maxselect = $('#maxSelect option:selected').text();
+    reloader(classselect, minselect, maxselect);
+});
+$('#minSelect').click(function() {
+    markerdata = []
+    classselect = $('#class option:selected').text();
+    minselect = $('#minSelect option:selected').text();
+    maxselect = $('#maxSelect option:selected').text();
+    reloader(classselect, minselect, maxselect);
+});
+$('#maxSelect').click(function() {
+    markerdata = []
+    classselect = $('#class option:selected').text();
+    minselect = $('#minSelect option:selected').text();
+    maxselect = $('#maxSelect option:selected').text();
+    reloader(classselect, minselect, maxselect);
+});
+      </script> 
+      <script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script> 
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> 
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+   </body>
+</html>
